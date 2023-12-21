@@ -11,11 +11,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Print Current Directory
         run: pwd
-      - name: List Files in Directory
+      - name: List Files and Directories in Root
         run: ls
       - name: Check for .NET CLI
         run: dotnet build
-      - name: List Files in Directory
+      - name: List All Files
         run: ls TrickingLibraryApi/ -R
-      - name: Check for NPM
-        run: npm
+      - name: Check for NPM Version
+        run: npm -v
