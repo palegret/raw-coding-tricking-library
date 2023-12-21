@@ -7,15 +7,13 @@ jobs:
     name: Build Our App
     runs-on: ubuntu-latest
     steps:
-      - name: Pull Code
+      - name: Pull repository
         uses: actions/checkout@v4
-      - name: Print Current Directory
+      - name: Print current directory
         run: pwd
-      - name: List Files and Directories in Root
-        run: ls
-      - name: Check for .NET CLI
+      - name: Build with .NET CLI
         run: dotnet build
-      - name: List All Files
+      - name: List all files
         run: ls TrickingLibraryApi/ -R
-      - name: Check for NPM Version
+      - name: Check NPM version
         run: npm -v
