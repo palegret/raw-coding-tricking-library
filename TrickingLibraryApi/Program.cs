@@ -4,6 +4,8 @@ namespace TrickingLibraryApi;
 
 public static class Program
 {
+    private const string AllCors = "All";
+    
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -11,11 +13,20 @@ public static class Program
 
         services.AddControllers();
         
+        services.AddCors(options => options.AddPolicy(
+            AllCors, 
+            build => build
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+        ));
+        
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
             app.UseDeveloperExceptionPage();
 
+        app.UseCors(AllCors);
         app.UseRouting();
 
         app.UseEndpoints(endpoints => {
