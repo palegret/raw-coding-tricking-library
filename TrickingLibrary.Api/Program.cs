@@ -1,6 +1,6 @@
 #pragma warning disable ASP0014
 
-namespace TrickingLibraryApi;
+namespace TrickingLibrary.Api;
 
 public static class Program
 {

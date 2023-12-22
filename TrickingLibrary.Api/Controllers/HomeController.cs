@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace TrickingLibraryApi.Controllers;
+namespace TrickingLibrary.Api.Controllers;
 
 [ApiController]
 [Route("api/home")]
