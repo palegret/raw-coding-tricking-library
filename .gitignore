@@ -6,3 +6,6 @@ riderModule.iml
 
 # Added to default
 .idea/
+.vs/
+*.user
+appsettings.*.json
