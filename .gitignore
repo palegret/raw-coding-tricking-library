@@ -8,4 +8,5 @@ riderModule.iml
 .idea/
 .vs/
 *.user
-appsettings.*.json
+appsettings.json
+appsettings.Development.json
