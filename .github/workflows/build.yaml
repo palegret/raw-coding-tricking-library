@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build: 
-    name: Build Our App
+    name: Build Process
     runs-on: ubuntu-latest
     steps:
       - name: Pull repository

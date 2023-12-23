@@ -10,3 +10,4 @@ riderModule.iml
 *.user
 appsettings.json
 appsettings.Development.json
+/wwwroot/videos/
