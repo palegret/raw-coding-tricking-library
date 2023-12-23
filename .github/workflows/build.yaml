@@ -13,7 +13,7 @@ jobs:
         run: pwd
       - name: Build with .NET CLI
         run: dotnet build
-      - name: List all files
-        run: ls TrickingLibraryApi/ -R
+      - name: List all files in TrickingLibrary.Api project
+        run: ls TrickingLibrary.Api/ -R
       - name: Check NPM version
         run: npm -v
