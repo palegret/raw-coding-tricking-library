@@ -15,9 +15,43 @@
         <logo/>
         <vuetify-logo/>
       </div>
+
+      <v-card v-if="tricks">
+        <v-card-title>
+          <span class="headline">Tricks</span>
+        </v-card-title>
+        <v-card-text>
+          <ul>
+            <li v-for="trick in tricks" :key="trick.id">
+              {{trick.name}}
+            </li>
+          </ul>
+        </v-card-text>      
+      </v-card>
+      <v-divider class="my-3"></v-divider>
+      <v-card class="mb-3">
+        <v-card-title>
+          <span class="headline">Create a new trick</span>
+        </v-card-title>
+        <v-card-text>
+          <v-text-field 
+            label="Trick name" 
+            v-model="trickName" 
+            required 
+          />
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn color="primary" @click="saveTrick">
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
       <v-card>
         <v-card-title class="headline">
           {{message}}
+          <v-btn @click="reset" class="ml-2">Reset</v-btn>
+          <v-btn @click="resetTricks" class="ml-1">Reset Tricks</v-btn>
         </v-card-title>
         <v-card-text>
           <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower
@@ -86,21 +120,36 @@
 <script>
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
-import Axios from "axios";
+import { mapState, mapActions, mapMutations } from 'vuex';
 
 export default {
   components: {
     Logo,
     VuetifyLogo
   },
-  data: () => ({
-    message: ""
-  }),
-  asyncData(payload) {
-    return Axios.get("http://localhost:5000/api/home")
-      .then(({data}) => {
-        return { message: data }
-      })
-  }
+  data() {
+    return {
+      trickName: '',
+    }
+  },
+  computed: {
+    ...mapState({
+      message: state => state.message
+    }),
+    ...mapState('tricks', {
+      tricks: state => state.tricks
+    }),
+  },
+  methods: {
+    ...mapMutations(['reset']),
+    ...mapMutations('tricks', {
+      resetTricks: 'reset',
+    }),
+    ...mapActions('tricks', ['createTrick']),
+    async saveTrick() {
+      await this.createTrick({ trick: { name: this.trickName }});
+      this.trickName = '';
+    }
+  },
 }
 </script>

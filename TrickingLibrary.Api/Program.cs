@@ -12,6 +12,8 @@ public static class Program
         var services = builder.Services;
 
         services.AddControllers();
+
+        services.AddSingleton<TrickyStore>();
         
         services.AddCors(options => options.AddPolicy(
             AllCors, 
