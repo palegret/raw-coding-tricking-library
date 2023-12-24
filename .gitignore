@@ -7,7 +7,7 @@ riderModule.iml
 # Added to default
 .idea/
 .vs/
+**/wwwroot/videos/
 *.user
 appsettings.json
 appsettings.Development.json
-/wwwroot/videos/
