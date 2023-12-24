@@ -91,8 +91,7 @@ export default {
     ...mapMutations('videos', {
       resetVideos: 'reset',
     }),
-    ...mapActions('tricks', ['createTrick']),
-    ...mapActions('videos', ['startVideoUpload']),
+    ...mapActions('videos', ['startVideoUpload', 'createTrick']),
     async handleFile(file) {
       if (!file) {
         console.error('Error: file is null.');

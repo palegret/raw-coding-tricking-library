@@ -18,4 +18,8 @@ export const actions = {
     const uploadPromise = this.$axios.$post('/api/videos', formData);
     commit('setTask', { uploadPromise });
   },
+  async createTrick({ commit, dispatch }, { trick }) {
+    await await this.$axios.post('/api/tricks', trick);
+    dispatch('fetchTricks');
+  },
 };
