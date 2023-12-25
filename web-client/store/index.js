@@ -1,5 +1,3 @@
-import Axios from 'axios';
-
 const initState = () => ({});
 
 export const state = initState;
