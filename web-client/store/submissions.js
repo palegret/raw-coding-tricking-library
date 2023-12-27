@@ -18,4 +18,8 @@ export const actions = {
     const submissions = await this.$axios.$get('/api/submissions');
     commit('setSubmissions', { submissions });
   },
+  async fetchTrickSubmissions({ commit }, { trickId }) {
+    const submissions = await this.$axios.$get(`/api/tricks/${trickId}/submissions`);
+    commit('setSubmissions', { submissions });
+  },
 };

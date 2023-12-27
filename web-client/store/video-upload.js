@@ -50,8 +50,5 @@ export const actions = {
     }
 
     await this.$axios.post('/api/submissions', submission);
-
-    await dispatch('tricks/fetchTricks', null, { root: true });
-    await dispatch('submissions/fetchSubmissions', null, { root: true });
   },
 };

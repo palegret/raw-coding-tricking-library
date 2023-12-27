@@ -22,18 +22,28 @@ public class TricksController : ControllerBase
 
     // GET api/tricks/{id}
     [HttpGet("{id}")]
-    public Trick? Get(int id) =>
-        _appDbContext.Tricks.FirstOrDefault(x => x.Id.Equals(id));
+    public Trick? Get(string id) =>
+        _appDbContext.Tricks
+            .FirstOrDefault(x => 
+                !string.IsNullOrWhiteSpace(x.Id) 
+                && x.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
     // GET api/tricks/{trickId}/submissions
-    [HttpGet("{trickId}")]
-    public IEnumerable<Submission> TrickSubmissions(int trickId) =>
-        _appDbContext.Submissions.Where(x => x.TrickId.Equals(trickId)).ToList();
+    [HttpGet("{trickId}/submissions")]
+    public IEnumerable<Submission> TrickSubmissions(string trickId) =>
+        _appDbContext.Submissions
+            .Where(x => x.TrickId.Equals(trickId, StringComparison.InvariantCultureIgnoreCase))
+            .ToList();
 
     // POST api/tricks
     [HttpPost]
-    public async Task<Trick> Create([FromBody] Trick trick)
+    public async Task<Trick?> Create([FromBody] Trick trick)
     {
+        if (trick == null || string.IsNullOrWhiteSpace(trick.Name))
+            return null;
+
+        trick.Id = trick.Name.Replace(" ", "-").ToLowerInvariant();
+
         _appDbContext.Add(trick);
         await _appDbContext.SaveChangesAsync();
 
@@ -44,7 +54,7 @@ public class TricksController : ControllerBase
     [HttpPut]
     public async Task<Trick?> Update([FromBody] Trick trick)
     {
-        if (trick.Id == 0)
+        if (string.IsNullOrWhiteSpace(trick.Id))
             return null;
 
         _appDbContext.Add(trick);
@@ -55,7 +65,7 @@ public class TricksController : ControllerBase
 
     // DELETE api/tricks/{id}
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(string id)
     {
         var trick = _appDbContext.Tricks.FirstOrDefault(x => x.Id.Equals(id));
 
