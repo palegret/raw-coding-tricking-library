@@ -1,5 +1,8 @@
 #pragma warning disable ASP0014
 
+using Microsoft.EntityFrameworkCore;
+using TrickingLibrary.Data;
+
 namespace TrickingLibrary.Api;
 
 public static class Program
@@ -13,8 +16,8 @@ public static class Program
 
         services.AddControllers();
 
-        services.AddSingleton<TrickyStore>();
-        
+        services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("Dev"));
+
         services.AddCors(options => options.AddPolicy(
             AllCors, 
             build => build

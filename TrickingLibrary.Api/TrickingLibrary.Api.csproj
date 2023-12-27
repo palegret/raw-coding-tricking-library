@@ -6,4 +6,18 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Models\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.14" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TrickingLibrary.Data\TrickingLibrary.Data.csproj" />
+      <ProjectReference Include="..\TrickingLibrary.Models\TrickingLibrary.Models.csproj" />
+    </ItemGroup>
+
 </Project>
