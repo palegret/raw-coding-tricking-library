@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using TrickingLibrary.Data;
 using TrickingLibrary.Models;
 
@@ -24,9 +25,10 @@ public class TricksController : ControllerBase
     [HttpGet("{id}")]
     public Trick? Get(string id) =>
         _appDbContext.Tricks
-            .FirstOrDefault(x => 
-                !string.IsNullOrWhiteSpace(x.Id) 
-                && x.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            .FirstOrDefault(trick => 
+                trick != null 
+                && !string.IsNullOrWhiteSpace(trick.Id) 
+                && trick.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
     // GET api/tricks/{trickId}/submissions
     [HttpGet("{trickId}/submissions")]

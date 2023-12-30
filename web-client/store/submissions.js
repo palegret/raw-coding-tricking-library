@@ -22,4 +22,7 @@ export const actions = {
     const submissions = await this.$axios.$get(`/api/tricks/${trickId}/submissions`);
     commit('setSubmissions', { submissions });
   },
+  createSubmission({ state, commit, dispatch }, { formData }) {
+    return this.$axios.$post('/api/submissions', formData);
+  },
 };

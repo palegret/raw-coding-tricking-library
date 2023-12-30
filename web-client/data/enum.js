@@ -10,3 +10,15 @@ export const UPLOAD_STEP = {
   SUBMISSION_INFORMATION: 4,
   REVIEW: 5,
 };
+
+export const TRICK_STEP = {
+  TRICK_INFORMATION: 1,
+  REVIEW: 2,
+};
+
+export const SUBMISSION_STEP = {
+  UPLOAD_VIDEO: 1,
+  SELECT_TRICK: 2,
+  SUBMISSION_INFORMATION: 3,
+  REVIEW: 4,
+};
