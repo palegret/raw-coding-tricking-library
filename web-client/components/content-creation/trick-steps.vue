@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pt-5">
+  <v-card class="pt-0">
     <v-card-text>
       <v-stepper v-model="step">
         <v-stepper-header>
@@ -16,7 +16,7 @@
           <v-stepper-content :step="trickStep.TRICK_INFORMATION">
             <v-card class="mb-2">
               <v-card-text>
-                <v-text-field label="Trick Name" v-model="formData.trickName" required />
+                <v-text-field label="Trick Name" v-model="formData.name" required />
               </v-card-text>
               <v-card-actions>
                 <v-spacer/>
@@ -34,7 +34,7 @@
               </v-card-title>
               <v-card-subtitle>
                 Here is where you review your trick information. If everything
-                looks correct, click the 'Save' button.
+                looks correct, click the 'Save Trick' button.
               </v-card-subtitle>
               <v-card-text>
                 <p>Trick information would go here.</p>
@@ -54,13 +54,13 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import { TRICK_STEP } from '../../data/enum.js';
 
 const initState = () => ({
   step: TRICK_STEP.TRICK_INFORMATION,
   formData: {
-    trickName: '',
+    name: '',
   },
 });
 
@@ -68,8 +68,16 @@ export default {
   name: 'trick-steps',
   data: initState,
   computed: {
+    ...mapState('video-upload', ['active']),
     trickStep() { 
       return TRICK_STEP 
+    },
+  },
+  watch: {
+    active(newValue) {
+      if (!newValue) {
+        this.resetData();
+      }
     },
   },
   methods: {
@@ -78,11 +86,13 @@ export default {
     setStep({ step }) {
       this.step = step;
     },
+    resetData() {
+      Object.assign(this.$data, initState());
+    },
     async save() {
       await this.createTrick({ formData: this.formData });
-      // TODO: Close dialog and reset component state.
       this.reset();
-      Object.assign(this.$data, initState());
+      this.resetData();
     },
   },
 }

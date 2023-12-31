@@ -1,9 +1,9 @@
 <template>
-  <v-dialog dark v-model="active" persistent>
+  <v-dialog dark :value="active" persistent>
     <template v-slot:activator="{ on }">
       <v-menu offset-y v-on="on">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" dark v-bind="attrs" v-on="on">
+          <v-btn dark depressed v-bind="attrs" v-on="on">
             Create
           </v-btn>
         </template>
@@ -16,6 +16,9 @@
     </template>
     <div v-if="component">
       <component :is="component" />
+    </div>
+    <div class="d-flex justify-center my-5">
+      <v-btn @click="reset">Close</v-btn>
     </div>
   </v-dialog>
 </template>

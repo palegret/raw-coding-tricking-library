@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pt-5">
+  <v-card class="pt-0">
     <v-card-text>
       <v-stepper v-model="step">
         <v-stepper-header>
@@ -46,7 +46,7 @@
           <v-stepper-content :step="submissionStep.SUBMISSION_INFORMATION">
             <v-card class="mb-2">
               <v-card-text>
-                <v-text-field label="Description" v-model="description" required />
+                <v-text-field label="Description" v-model="formData.description" required />
               </v-card-text>
               <v-card-actions>
                 <v-spacer/>
@@ -64,7 +64,7 @@
               </v-card-title>
               <v-card-subtitle>
                 Here is where you review your submission information. If
-                everything looks correct, click the 'Save' button.
+                everything looks correct, click the 'Save Submission' button.
               </v-card-subtitle>
               <v-card-text>
                 <p>Submission information would go here.</p>
@@ -79,15 +79,12 @@
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
-      <div class="d-flex justify-center mt-5">
-        <v-btn @click="toggleActivity">Close</v-btn>
-      </div>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import { SUBMISSION_STEP } from '../../data/enum.js';
 
 const initState = () => ({
@@ -104,8 +101,16 @@ export default {
   data: initState,
   computed: {
     ...mapGetters('tricks', ['trickItems']),
+    ...mapState('video-upload', ['active']),
     submissionStep() { 
       return SUBMISSION_STEP 
+    },
+  },
+  watch: {
+    active(newValue) {
+      if (!newValue) {
+        this.resetData();
+      }
     },
   },
   methods: {
@@ -114,7 +119,7 @@ export default {
     setStep({ step }) {
       this.step = step;
     },
-    reset() {
+    resetData() {
       Object.assign(this.$data, initState());
     },
     async handleFile(file) {
@@ -131,9 +136,7 @@ export default {
     },
     save() {
       this.createSubmission({ formData: this.formData });
-
       this.hide();
-      this.reset();
     },
   },
 }

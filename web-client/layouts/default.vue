@@ -15,6 +15,7 @@
 import ContentCreationDialog from '../components/content-creation/content-creation-dialog';
 
 export default {
+  name: 'DefaultLayout',
   components: {
     ContentCreationDialog,
   },

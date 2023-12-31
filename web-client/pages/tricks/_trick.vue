@@ -3,19 +3,13 @@
 <template>
   <div class="d-flex justify-center align-start">
     <div v-if="haveSubmissions" class="mx-2">
-      <div v-for="x in 20" :key="x">
       <div v-for="submission in submissions" :key="submission.id">
         <span>
-        Submission ID {{submission.id}}: {{submission.description}}
+          Submission ID {{submission.id}}: {{submission.description}}
         </span>
         <div>
-          <video
-            :src="`http://localhost:5000/api/videos/${submission.video}`"
-            width="400"
-            controls
-          ></video>
+          <video :src="`http://localhost:5000/api/videos/${submission.video}`" width="400" controls></video>
         </div>
-      </div>
       </div>
     </div>
     <div class="mx-2 sticky">
