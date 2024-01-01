@@ -43,6 +43,30 @@ public static class Program
                 appDbContext.Difficulties.Add(new Difficulty { Id = "easy", Name = "Easy", Description = "An easy difficulty trick." });
                 appDbContext.Difficulties.Add(new Difficulty { Id = "medium", Name = "Medium", Description = "A medium difficulty trick." });
                 appDbContext.Difficulties.Add(new Difficulty { Id = "hard", Name = "Hard", Description = "A hard difficulty trick." });
+
+                appDbContext.Tricks.Add(new Trick {
+                    Id = "backwards-roll",
+                    Name = "Backwards Roll",
+                    Description = "A backwards roll.",
+                    Difficulty = "easy",
+                    TrickCategories = new List<TrickCategory> {
+                        new() { CategoryId = "transition" }
+                    }
+                });
+
+                appDbContext.Tricks.Add(new Trick {
+                    Id = "backflip",
+                    Name = "Backflip",
+                    Description = "A backflip.",
+                    Difficulty = "medium",
+                    TrickCategories = new List<TrickCategory> {
+                        new() { CategoryId = "flip" }
+                    },
+                    Prerequisites = new List<TrickRelationship> {
+                        new() { PrerequisiteId = "backwards-roll" }
+                    }
+                });
+
                 appDbContext.SaveChanges();
             }
         }

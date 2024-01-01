@@ -8,7 +8,7 @@
       </v-card-title>
       <v-card-text>
         <div v-for="trick in tricks" :key="trick.id">
-          <v-btn :to="`/tricks/${trick.id}`">{{trick.name}}</v-btn> 
+          <v-btn :to="`/trick/${trick.id}`">{{trick.name}}</v-btn> 
         </div>
       </v-card-text>
     </v-card>
@@ -24,9 +24,6 @@ export default {
     haveTricks() {
       return this.tricks && this.tricks.length > 0;
     },
-  },
-  async fetch() {
-    await this.$store.dispatch('tricks/fetchTricks');
   },
 }
 </script>

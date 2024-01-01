@@ -9,7 +9,7 @@ export const mutations = {
 };
 
 export const actions = {
-  async nuxtServerInit({ store, commit, dispatch }) {
-    await dispatch('tricks/fetchTricks', null, { root: true });
+  nuxtServerInit({ store, commit, dispatch }) {
+    return dispatch('tricks/fetchTricks');
   }
 };
