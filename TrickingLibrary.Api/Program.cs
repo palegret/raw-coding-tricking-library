@@ -50,6 +50,7 @@ public static class Program
                     Description = "A backwards roll.",
                     Difficulty = "easy",
                     TrickCategories = new List<TrickCategory> {
+                        new() { CategoryId = "flip" },
                         new() { CategoryId = "transition" }
                     }
                 });
