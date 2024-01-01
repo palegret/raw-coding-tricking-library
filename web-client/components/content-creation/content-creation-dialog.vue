@@ -1,5 +1,5 @@
 <template>
-  <v-dialog dark :value="active" persistent>
+  <v-dialog dark :value="active" width="700" persistent>
     <template v-slot:activator="{ on }">
       <v-menu offset-y v-on="on">
         <template v-slot:activator="{ on, attrs }">
@@ -25,12 +25,16 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import CategoryForm from './category-form';
+import DifficultyForm from './difficulty-form';
 import SubmissionSteps from './submission-steps';
 import TrickSteps from './trick-steps';
 
 export default {
   name: 'content-creation-dialog',
   components: {
+    CategoryForm,
+    DifficultyForm,
     SubmissionSteps,    
     TrickSteps,
   },
@@ -38,6 +42,14 @@ export default {
     ...mapState('video-upload', ['active', 'component']),
     menuItems() {
       return [
+        {
+          title: 'Category',
+          component: CategoryForm,
+        },
+        {
+          title: 'Difficulty',
+          component: DifficultyForm,
+        },
         {
           title: 'Trick',
           component: TrickSteps,

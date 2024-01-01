@@ -16,7 +16,12 @@
           <v-stepper-content :step="trickStep.TRICK_INFORMATION">
             <v-card class="mb-2">
               <v-card-text>
-                <v-text-field label="Trick Name" v-model="formData.name" required />
+                <v-text-field label="Name" v-model="formData.name" required />
+                <v-text-field label="Description" v-model="formData.description" required />
+                <v-select v-model="formData.difficulty" :items="difficultyItems" label="Select Difficulty"></v-select>
+                <v-select v-model="formData.prerequisites" :items="testData" label="Select Prerequisites" multiple chips small-chips deletable-chips></v-select>
+                <v-select v-model="formData.progressions" :items="testData" label="Select Progressions" multiple chips small-chips deletable-chips></v-select>
+                <v-select v-model="formData.categories" :items="categoryItems" label="Select Categories" multiple chips small-chips deletable-chips></v-select>
               </v-card-text>
               <v-card-actions>
                 <v-spacer/>
@@ -54,14 +59,24 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 import { TRICK_STEP } from '../../data/enum.js';
 
 const initState = () => ({
   step: TRICK_STEP.TRICK_INFORMATION,
   formData: {
     name: '',
+    description: '',
+    difficulty: '',
+    prerequisites: [],
+    progressions: [],
+    categories: [],
   },
+  testData: [
+    { text: 'Foo', value: 1 },
+    { text: 'Bar', value: 2 },
+    { text: 'Baz', value: 3 },
+  ],
 });
 
 export default {
@@ -69,6 +84,7 @@ export default {
   data: initState,
   computed: {
     ...mapState('video-upload', ['active']),
+    ...mapGetters('tricks', ['trickItems', 'categoryItems', 'difficultyItems']),
     trickStep() { 
       return TRICK_STEP 
     },

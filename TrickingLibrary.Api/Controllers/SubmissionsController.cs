@@ -23,7 +23,7 @@ public class SubmissionsController : ControllerBase
     // GET api/submissions/{id}
     [HttpGet("{id}")]
     public Submission? Get(int id) =>
-        _appDbContext.Submissions.FirstOrDefault(x => x.Id.Equals(id));
+        _appDbContext.Submissions.FirstOrDefault(s => s.Id.Equals(id));
 
     // POST api/submissions
     [HttpPost]
@@ -52,7 +52,7 @@ public class SubmissionsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var submission = _appDbContext.Submissions.FirstOrDefault(x => x.Id.Equals(id));
+        var submission = Get(id); 
 
         if (submission == null)
             return NotFound();

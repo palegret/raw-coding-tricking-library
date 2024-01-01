@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using TrickingLibrary.Data;
 using TrickingLibrary.Models;
+using TrickingLibrary.Api.Forms;
+using TrickingLibrary.Api.ViewModels;
 
 namespace TrickingLibrary.Api.Controllers;
 
@@ -18,43 +19,57 @@ public class TricksController : ControllerBase
 
     // GET api/tricks
     [HttpGet]
-    public IEnumerable<Trick> All() =>
-        _appDbContext.Tricks.ToList();
+    public IEnumerable<object> All() =>
+        _appDbContext.Tricks.Select(TrickViewModel.Default).ToList();
 
     // GET api/tricks/{id}
     [HttpGet("{id}")]
-    public Trick? Get(string id) =>
+    public object? Get(string id) =>
         _appDbContext.Tricks
-            .FirstOrDefault(trick => 
-                trick != null 
-                && !string.IsNullOrWhiteSpace(trick.Id) 
-                && trick.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            .Where(t => (t.Id ?? string.Empty).Equals(id, StringComparison.InvariantCultureIgnoreCase))
+            .Select(TrickViewModel.Default)
+            .FirstOrDefault();
 
     // GET api/tricks/{trickId}/submissions
     [HttpGet("{trickId}/submissions")]
     public IEnumerable<Submission> TrickSubmissions(string trickId) =>
         _appDbContext.Submissions
-            .Where(x => x.TrickId.Equals(trickId, StringComparison.InvariantCultureIgnoreCase))
+            .Where(s => s.TrickId.Equals(trickId, StringComparison.InvariantCultureIgnoreCase))
             .ToList();
 
     // POST api/tricks
     [HttpPost]
-    public async Task<Trick?> Create([FromBody] Trick trick)
+    public async Task<object?> Create([FromBody] TrickForm trickForm)
     {
-        if (trick == null || string.IsNullOrWhiteSpace(trick.Name))
+        if (trickForm == null || string.IsNullOrWhiteSpace(trickForm.Name))
             return null;
 
-        trick.Id = trick.Name.Replace(" ", "-").ToLowerInvariant();
+        trickForm.Id = trickForm.Name.Replace(" ", "-").ToLowerInvariant();
+
+        var trickCategories = trickForm.Categories?.Select(category => new TrickCategory {
+            CategoryId = category,
+            TrickId = trickForm.Id
+        }).ToList() ?? new List<TrickCategory>();
+
+        var trick = new Trick {
+            Id = trickForm.Id,
+            Name = trickForm.Name,
+            Description = trickForm.Description,
+            Difficulty = trickForm.Difficulty,
+            TrickCategories = trickCategories
+        };
 
         _appDbContext.Add(trick);
         await _appDbContext.SaveChangesAsync();
 
-        return trick;
+        var trickViewModel = GetTrickViewModel(trick);
+
+        return trickViewModel;
     }
 
     // PUT api/tricks
     [HttpPut]
-    public async Task<Trick?> Update([FromBody] Trick trick)
+    public async Task<object?> Update([FromBody] Trick trick)
     {
         if (string.IsNullOrWhiteSpace(trick.Id))
             return null;
@@ -62,14 +77,17 @@ public class TricksController : ControllerBase
         _appDbContext.Add(trick);
         await _appDbContext.SaveChangesAsync();
 
-        return trick;
+        var trickViewModel = GetTrickViewModel(trick);
+
+        return trickViewModel;
     }
 
     // DELETE api/tricks/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
-        var trick = _appDbContext.Tricks.FirstOrDefault(x => x.Id.Equals(id));
+        var trick = _appDbContext.Tricks
+            .FirstOrDefault(t => (t.Id ?? "").Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
         if (trick == null)
             return NotFound();
@@ -78,5 +96,16 @@ public class TricksController : ControllerBase
         await _appDbContext.SaveChangesAsync();
 
         return Ok();
+    }
+
+    private static object? GetTrickViewModel(Trick trick)
+    {
+        if (trick == null)
+            return null;
+
+        var trickViewModelExpression = TrickViewModel.Default.Compile();
+        var trickViewModel = TrickViewModel.Default.Compile().Invoke(trick);
+
+        return trickViewModel;
     }
 }

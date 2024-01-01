@@ -1,7 +1,9 @@
+#pragma warning disable ASP0000
 #pragma warning disable ASP0014
 
 using Microsoft.EntityFrameworkCore;
 using TrickingLibrary.Data;
+using TrickingLibrary.Models;
 
 namespace TrickingLibrary.Api;
 
@@ -25,7 +27,26 @@ public static class Program
                 .AllowAnyHeader()
                 .AllowAnyMethod()
         ));
-        
+     
+        var serviceProvider = services.BuildServiceProvider();
+
+        using (var serviceScope = serviceProvider.CreateScope())
+        {
+            var appDbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var environment = serviceScope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+
+            if (environment.IsDevelopment())
+            {
+                appDbContext.Categories.Add(new Category { Id = "kick", Name = "Kick", Description = "A kick." });
+                appDbContext.Categories.Add(new Category { Id = "flip", Name = "Flip", Description = "A flip." });
+                appDbContext.Categories.Add(new Category { Id = "transition", Name = "Transition", Description = "A transition." });
+                appDbContext.Difficulties.Add(new Difficulty { Id = "easy", Name = "Easy", Description = "An easy difficulty trick." });
+                appDbContext.Difficulties.Add(new Difficulty { Id = "medium", Name = "Medium", Description = "A medium difficulty trick." });
+                appDbContext.Difficulties.Add(new Difficulty { Id = "hard", Name = "Hard", Description = "A hard difficulty trick." });
+                appDbContext.SaveChanges();
+            }
+        }
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
