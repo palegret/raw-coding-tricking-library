@@ -50,7 +50,7 @@
               <v-card-actions>
                 <v-spacer/>
                 <v-btn color="primary" @click="save">
-                  Save Trick
+                  Save
                 </v-btn>
               </v-card-actions>
             </v-card>

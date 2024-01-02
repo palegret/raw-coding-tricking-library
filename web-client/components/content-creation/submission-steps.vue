@@ -75,7 +75,7 @@
               <v-card-actions>
                 <v-spacer/>
                 <v-btn color="primary" @click="save">
-                  Save Submission
+                  Save
                 </v-btn>
               </v-card-actions>
             </v-card>
