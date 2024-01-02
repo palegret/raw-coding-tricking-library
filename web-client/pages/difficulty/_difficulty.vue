@@ -2,10 +2,10 @@
   <div class="d-flex justify-center align-start mt-2">
     <trick-list v-if="haveTricks" :tricks="tricks" class="mx-2" />
 
-    <v-sheet v-if="category" class="mx-2 pa-3 sticky">
-      <p class="text-h6 ma-0">Category: {{ category.name }}</p>
+    <v-sheet v-if="difficulty" class="mx-2 pa-3 sticky">
+      <p class="text-h6 ma-0">Difficulty: {{ difficulty.name }}</p>
       <v-divider class="my-1"></v-divider>
-      <p class="text-body-2 ma-0">{{ category.description }}</p>
+      <p class="text-body-2 ma-0">{{ difficulty.description }}</p>
     </v-sheet>
   </div>
 </template>
@@ -15,7 +15,7 @@ import { mapGetters } from 'vuex';
 import TrickList from '../../components/trick-list';
 
 export default {
-  name: 'CategoryPage',
+  name: 'DifficultyPage',
   components: {
     TrickList,
   },
@@ -23,33 +23,33 @@ export default {
     tricks: [],
   }),
   computed: {
-    ...mapGetters('tricks', ['categoryById']),
+    ...mapGetters('tricks', ['difficultyById']),
     haveTricks() {
       return this.tricks && this.tricks.length > 0;
     },
-    categoryId() {
-      return this.$route.params.category;
+    difficultyId() {
+      return this.$route.params.difficulty;
     },
-    category() {
-      return this.categoryById(this.categoryId);
+    difficulty() {
+      return this.difficultyById(this.difficultyId);
     },
   },
   methods: {
   },
   async fetch() {
-    this.tricks = await this.$axios.$get(`/api/categories/${this.categoryId}/tricks`);
+    this.tricks = await this.$axios.$get(`/api/difficulties/${this.difficultyId}/tricks`);
   },
   head() {
-    if (!this.category)
+    if (!this.difficulty)
       return {};
     
     return {
-      title: this.category.name,
+      title: this.difficulty.name,
       meta: [
-        { 
-          hid: 'description', 
-          name: 'description', 
-          content: this.category.description 
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.difficulty.description
         },
       ],
     };

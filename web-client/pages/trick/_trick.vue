@@ -13,15 +13,18 @@
       </div>
     </div>
     <v-sheet v-if="trick" class="mx-2 pa-3 sticky">
-      <p class="text-h6 ma-0">
-        Trick: {{ trick.name }}
+      <p class="text-h5 mt-0 mb-4 mx-0">
+        <span class="pr-2">{{ trick.name }}</span>
+        <v-chip small class="mb-1" :to="`/difficulty/${difficulty.id}`">
+          {{ difficulty.name }}
+        </v-chip>
       </p>
       <v-divider class="my-1"></v-divider>
       <p class="text-body-2 ma-0">
         {{ trick.description }}
       </p>
-      <p class="text-body-2 ma-0">
-        {{ trick.difficulty }}
+      <p class="text-subtitle-1 my-2">
+        Difficulty: {{ difficulty.name }}
       </p>
       <v-divider class="my-1"></v-divider>
       <div v-for="(rd, i) in relatedData" :key="rd.rowKey(i)">
@@ -48,7 +51,7 @@ export default {
   computed: {
     ...mapState('submissions', ['submissions']),
     ...mapState('tricks', ['tricks', 'categories']),
-    ...mapGetters('tricks', ['trickById']),
+    ...mapGetters('tricks', ['trickById', 'difficultyById']),
     haveSubmissions() {
       return this.submissions && this.submissions.length > 0;
     },
@@ -58,6 +61,9 @@ export default {
     trick() {
       return this.trickById(this.trickId);
     }, 
+    difficulty() {
+      return this.difficultyById(this.trick.difficulty);
+    },
     relatedData() {
       return [
         {
@@ -88,6 +94,9 @@ export default {
     await this.$store.dispatch('submissions/fetchTrickSubmissions', { trickId: this.trickId }), { root: true };
   },
   head() {
+    if (!this.trick)
+      return {};
+
     return {
       title: this.trick.name,
       meta: [

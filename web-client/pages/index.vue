@@ -3,11 +3,8 @@
 <template>
   <div>
     <v-card v-if="haveTricks">
-      <v-card-title>
-        <span class="headline">Tricks</span>
-      </v-card-title>
       <v-card-text>
-        <div v-for="trick in tricks" :key="trick.id">
+        <div v-for="trick in tricks" :key="trick.id" class="my-2">
           <v-btn :to="`/trick/${trick.id}`">{{trick.name}}</v-btn> 
         </div>
       </v-card-text>
