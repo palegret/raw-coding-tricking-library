@@ -1,22 +1,27 @@
 <template>
-  <div class="d-flex justify-center align-start mt-2">
-    <trick-list v-if="haveTricks" :tricks="tricks" class="mx-2" />
-
-    <v-sheet v-if="category" class="mx-2 pa-3 sticky">
-      <p class="text-h6 ma-0">Category: {{ category.name }}</p>
-      <v-divider class="my-1"></v-divider>
-      <p class="text-body-2 ma-0">{{ category.description }}</p>
-    </v-sheet>
-  </div>
+  <item-content-layout>
+    <template v-slot:content>
+      <trick-list v-if="haveTricks" :tricks="tricks" />
+    </template>
+    <template v-slot:item>
+      <div v-if="category">
+        <p class="text-h6 ma-0">Category: {{ category.name }}</p>
+        <v-divider class="my-1"></v-divider>
+        <p class="text-body-2 ma-0">{{ category.description }}</p>
+      </div>
+    </template>
+  </item-content-layout>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import ItemContentLayout from '../../components/item-content-layout';
 import TrickList from '../../components/trick-list';
 
 export default {
   name: 'CategoryPage',
   components: {
+    ItemContentLayout,
     TrickList,
   },
   data: () => ({

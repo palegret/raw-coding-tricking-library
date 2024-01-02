@@ -1,16 +1,18 @@
 <!--suppress ALL-->
 
 <template>
-  <div class="d-flex justify-center align-start mt-2">
-    <div v-if="haveSubmissions" class="mx-2">
-      <v-card v-for="submission in submissions" :key="submission.id" class="mb-2">
-        <video-player :video="submission.video" />
-        <v-card-text>
-          {{submission.description}}
-        </v-card-text>
-      </v-card>
-    </div>
-    <v-sheet v-if="trick" class="ml-1 mr-2 pa-3 rounded sticky">
+  <item-content-layout>
+    <template v-slot:content>
+      <div v-if="haveSubmissions">
+        <v-card v-for="submission in submissions" :key="submission.id" class="mb-2">
+          <video-player :video="submission.video" />
+          <v-card-text>
+            {{submission.description}}
+          </v-card-text>
+        </v-card>
+      </div>    
+    </template>
+    <template v-slot:item v-if="trick">
       <p class="text-h5 mt-0 mb-4 mx-0">
         <span class="pr-2">{{ trick.name }}</span>
         <v-chip small class="mb-1" :to="`/difficulty/${difficulty.id}`">
@@ -34,17 +36,19 @@
           </v-chip-group>
         </div>
       </div>
-    </v-sheet>
-  </div>
+    </template>
+  </item-content-layout>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import ItemContentLayout from '../../components/item-content-layout';
 import VideoPlayer from '../../components/video-player';
 
 export default {
   name: 'TrickPage',
   components: {
+    ItemContentLayout,
     VideoPlayer,
   },
   computed: {

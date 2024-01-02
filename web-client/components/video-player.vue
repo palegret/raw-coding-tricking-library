@@ -42,7 +42,7 @@ export default {
   border-top-right-radius: inherit;
   display: flex;
   position: relative;
-  width: 480px;
+  width: 100%;
 
   .play-button {
     align-items: center;
