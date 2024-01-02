@@ -24,8 +24,7 @@ public class CategoryController : ControllerBase
     // GET api/categories/{id}
     [HttpGet("{id}")]
     public Category? Get(string id) =>
-        _appDbContext.Categories
-            .FirstOrDefault(c => (c.Id ?? string.Empty).Equals(id, StringComparison.InvariantCultureIgnoreCase));
+        _appDbContext.Categories.FirstOrDefault(c => c.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
     // GET api/{id}/tricks
     [HttpGet("{id}/tricks")]

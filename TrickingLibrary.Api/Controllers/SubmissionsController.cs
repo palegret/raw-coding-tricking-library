@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Channels;
+using TrickingLibrary.Api.BackgroundServices.Messages;
 using TrickingLibrary.Data;
 using TrickingLibrary.Models;
 
@@ -18,7 +20,7 @@ public class SubmissionsController : ControllerBase
     // GET api/submissions
     [HttpGet]
     public IEnumerable<Submission> All() =>
-        _appDbContext.Submissions.ToList();
+        _appDbContext.Submissions.Where(s => s.VideoProcessed).ToList();
 
     // GET api/submissions/{id}
     [HttpGet("{id}")]
@@ -27,10 +29,24 @@ public class SubmissionsController : ControllerBase
 
     // POST api/submissions
     [HttpPost]
-    public async Task<Submission> Create([FromBody] Submission submission)
+    public async Task<Submission> Create([FromBody] Submission submission, [FromServices] Channel<EditVideoMessage> channel)
     {
+        // TODO - Validate video path.
+
+        submission.VideoProcessed = false;
+
         _appDbContext.Add(submission);
         await _appDbContext.SaveChangesAsync();
+
+        var input = submission.Video ?? string.Empty;
+        var extension = Path.GetExtension(input);
+        var output = $"converted_{DateTime.Now.Ticks}{extension}";
+
+        await channel.Writer.WriteAsync(new EditVideoMessage { 
+            SubmissionId = submission.Id,
+            Input = input,
+            Output = output
+        });
 
         return submission;
     }

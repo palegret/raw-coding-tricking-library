@@ -26,7 +26,7 @@ public class TricksController : ControllerBase
     [HttpGet("{id}")]
     public object? Get(string id) =>
         _appDbContext.Tricks
-            .Where(t => (t.Id ?? string.Empty).Equals(id, StringComparison.InvariantCultureIgnoreCase))
+            .Where(t => t.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase))
             .Select(TrickViewModel.Default)
             .FirstOrDefault();
 

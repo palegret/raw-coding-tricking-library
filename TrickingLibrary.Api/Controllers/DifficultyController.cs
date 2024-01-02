@@ -23,8 +23,7 @@ public class DifficultyController : ControllerBase
     // GET api/difficulties/{id}
     [HttpGet("{id}")]
     public Difficulty? Get(string id) =>
-        _appDbContext.Difficulties
-            .FirstOrDefault(d => (d.Id ?? string.Empty).Equals(id, StringComparison.InvariantCultureIgnoreCase));
+        _appDbContext.Difficulties.FirstOrDefault(d => d.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
     // GET api/{id}/tricks
     [HttpGet("{id}/tricks")]
