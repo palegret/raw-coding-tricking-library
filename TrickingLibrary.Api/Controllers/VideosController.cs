@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Diagnostics;
 
 namespace TrickingLibrary.Api.Controllers;
 
@@ -35,13 +36,34 @@ public class VideosController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> UploadVideo(IFormFile video)
     {
+        var workingDirectory = Path.Combine(_env.WebRootPath, "videos");
+        var randomFileName = Path.GetRandomFileName();
         var extension = Path.GetExtension(video.FileName);
-        var fileName = $"{Path.GetRandomFileName()}{extension}";
-        var savePath = Path.Combine(_env.WebRootPath, "videos", fileName);
+        var saveFileName = $"{randomFileName}{extension}";
+        var savePath = Path.Combine(workingDirectory, saveFileName);
+        var outFileName = $"{randomFileName}_optimized{extension}";
+        var outPath = Path.Combine(workingDirectory, outFileName);
 
         await using var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write);
         await video.CopyToAsync(fileStream);
 
-        return Ok(fileName);
+        await Task.Run(() => {
+            var processFileName = Path.Combine(_env.ContentRootPath, "Resources", "FFmpeg", "ffmpeg.exe");
+            var arguments = $"-y -i {savePath} -an -vf scale=540x380 {outPath}";
+
+            var processStartInfo = new ProcessStartInfo {
+                FileName = processFileName,
+                WorkingDirectory = workingDirectory,
+                Arguments = arguments,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+            };
+
+            using var process = new Process { StartInfo = processStartInfo };
+            process.Start();
+            process.WaitForExit();
+        });
+
+        return Ok(outFileName);
     }
 }

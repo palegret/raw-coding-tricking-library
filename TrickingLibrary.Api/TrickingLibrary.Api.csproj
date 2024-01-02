@@ -16,4 +16,34 @@
       <ProjectReference Include="..\TrickingLibrary.Models\TrickingLibrary.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Resources\FFmpeg\avcodec-60.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\FFmpeg\avdevice-60.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\FFmpeg\avfilter-9.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\FFmpeg\avformat-60.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\FFmpeg\avutil-58.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\FFmpeg\ffmpeg.exe">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\FFmpeg\postproc-57.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\FFmpeg\swresample-4.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\FFmpeg\swscale-7.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
