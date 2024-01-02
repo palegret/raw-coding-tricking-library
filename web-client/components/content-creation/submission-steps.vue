@@ -1,5 +1,8 @@
 <template>
   <v-card class="pt-0 elevation-1">
+    <v-card-title>
+      <span class="headline">Create Submission</span>
+    </v-card-title>
     <v-card-text>
       <v-stepper v-model="step">
         <v-stepper-header>
