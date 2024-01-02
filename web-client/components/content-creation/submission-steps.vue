@@ -54,7 +54,7 @@
               <v-card-actions>
                 <v-spacer/>
                 <v-btn color="primary" @click="setStep({ step: submissionStep.REVIEW })">
-                  Save Submission
+                  Next
                 </v-btn>
               </v-card-actions>
             </v-card>

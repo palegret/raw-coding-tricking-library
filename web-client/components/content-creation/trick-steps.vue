@@ -29,7 +29,7 @@
               <v-card-actions>
                 <v-spacer/>
                 <v-btn color="primary" @click="setStep({ step: trickStep.REVIEW })">
-                  Save Trick
+                  Next
                 </v-btn>
               </v-card-actions>
             </v-card>
