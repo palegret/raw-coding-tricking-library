@@ -39,6 +39,7 @@ export default {
   // Global CSS: 
   // https://go.nuxtjs.dev/config-css
   css: [
+    '@/assets/css/main.scss'
   ],
 
   // Plugins to run before rendering page: 
@@ -77,7 +78,6 @@ export default {
   // Vuetify module configuration: 
   // https://go.nuxtjs.dev/config-vuetify
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: true,
       themes: {

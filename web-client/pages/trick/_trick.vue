@@ -3,16 +3,14 @@
 <template>
   <div class="d-flex justify-center align-start mt-2">
     <div v-if="haveSubmissions" class="mx-2">
-      <div v-for="submission in submissions" :key="submission.id">
-        <span>
-          Submission ID {{submission.id}}: {{submission.description}}
-        </span>
-        <div>
-          <video :src="`http://localhost:5000/api/videos/${submission.video}`" width="400" controls></video>
-        </div>
-      </div>
+      <v-card v-for="submission in submissions" :key="submission.id" class="mb-2">
+        <video-player :video="submission.video" />
+        <v-card-text>
+          {{submission.description}}
+        </v-card-text>
+      </v-card>
     </div>
-    <v-sheet v-if="trick" class="mx-2 pa-3 sticky">
+    <v-sheet v-if="trick" class="ml-1 mr-2 pa-3 rounded sticky">
       <p class="text-h5 mt-0 mb-4 mx-0">
         <span class="pr-2">{{ trick.name }}</span>
         <v-chip small class="mb-1" :to="`/difficulty/${difficulty.id}`">
@@ -22,9 +20,6 @@
       <v-divider class="my-1"></v-divider>
       <p class="text-body-2 ma-0">
         {{ trick.description }}
-      </p>
-      <p class="text-subtitle-1 my-2">
-        Difficulty: {{ difficulty.name }}
       </p>
       <v-divider class="my-1"></v-divider>
       <div v-for="(rd, i) in relatedData" :key="rd.rowKey(i)">
@@ -45,9 +40,13 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import VideoPlayer from '../../components/video-player';
 
 export default {
   name: 'TrickPage',
+  components: {
+    VideoPlayer,
+  },
   computed: {
     ...mapState('submissions', ['submissions']),
     ...mapState('tricks', ['tricks', 'categories']),
