@@ -14,12 +14,18 @@
         </v-list>
       </v-menu>
     </template>
-    <div v-if="component">
-      <component :is="component" />
-    </div>
-    <div class="d-flex justify-center my-5">
-      <v-btn @click="reset">Close</v-btn>
-    </div>
+    <v-card>
+      <v-card-text class="pt-6 pb-4">
+        <div v-if="component">
+          <component :is="component" />
+        </div>
+      </v-card-text>
+      <v-card-actions class="pb-6">
+        <v-spacer></v-spacer>
+        <v-btn @click="reset">Close</v-btn>
+        <v-spacer></v-spacer>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
 </template>
 

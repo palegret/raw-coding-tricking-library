@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="elevation-1">
     <v-card-title>
       <span class="headline">Create Difficulty</span>
     </v-card-title>
@@ -11,7 +11,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn @click="save">Save</v-btn>
+      <v-btn color="primary" @click="save">Save</v-btn>
     </v-card-actions>
   </v-card>
 </template>

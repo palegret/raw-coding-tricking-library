@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pt-0">
+  <v-card class="pt-0 elevation-1">
     <v-card-text>
       <v-stepper v-model="step">
         <v-stepper-header>
