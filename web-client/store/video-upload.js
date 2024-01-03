@@ -36,6 +36,17 @@ export const actions = {
       .then(({ data }) => {
         commit('completeUpload');
         return data;
+      })
+      .catch((error) => {
+        if (this.$axios.isCancel(error)) {
+          console.log('Video upload was cancelled.');
+        } else {
+          console.error(error);
+          // Future code:
+          // commit('reset');
+          // const notificationMessage = { message: 'Error uploading video.', type: 'error' };
+          // dispatch('notifications/add', notificationMessage, { root: true });
+        }
       });
 
     commit('setUploadPromise', { uploadPromise, uploadCancelTokenSource });
