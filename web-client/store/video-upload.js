@@ -58,6 +58,7 @@ export const actions = {
       if (state.uploadComplete) {
         const video = await state.uploadPromise;
         this.$axios.delete('/api/videos/' + video)
+        console.log('Video upload was cancelled.');
       } else {
         state.uploadCancelTokenSource.cancel();
       }
