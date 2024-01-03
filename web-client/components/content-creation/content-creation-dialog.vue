@@ -22,7 +22,7 @@
       </v-card-text>
       <v-card-actions class="pb-6">
         <v-spacer></v-spacer>
-        <v-btn @click="reset">Close</v-btn>
+        <v-btn @click="cancelVideoUpload">Close</v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import CategoryForm from './category-form';
 import DifficultyForm from './difficulty-form';
 import SubmissionSteps from './submission-steps';
@@ -67,6 +67,9 @@ export default {
       ];
     },
   },
-  methods: mapMutations('video-upload', ['reset', 'activate']),
+  methods: {
+    ...mapMutations('video-upload', ['activate']),
+    ...mapActions('video-upload', ['cancelVideoUpload']),
+  }
 }
 </script>

@@ -19,12 +19,59 @@
           <v-stepper-content :step="trickStep.TRICK_INFORMATION">
             <v-card class="mb-2">
               <v-card-text>
-                <v-text-field label="Name" v-model="formData.name" required />
-                <v-text-field label="Description" v-model="formData.description" required />
-                <v-select v-model="formData.difficulty" :items="difficultyItems" label="Select Difficulty"></v-select>
-                <v-select v-model="formData.prerequisites" :items="testData" label="Select Prerequisites" multiple chips small-chips deletable-chips></v-select>
-                <v-select v-model="formData.progressions" :items="testData" label="Select Progressions" multiple chips small-chips deletable-chips></v-select>
-                <v-select v-model="formData.categories" :items="categoryItems" label="Select Categories" multiple chips small-chips deletable-chips></v-select>
+                <v-row dense>
+                  <v-col>
+                    <v-text-field 
+                      v-model="formData.name" 
+                      label="Name" 
+                      required 
+                    />
+                  </v-col>
+                  <v-col>
+                    <v-select 
+                      v-model="formData.difficulty" 
+                      :items="difficultyItems" 
+                      label="Difficulty"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row dense>
+                  <v-col>
+                    <v-text-field 
+                      v-model="formData.description" 
+                      label="Description" 
+                      required 
+                    />
+                  </v-col>
+                </v-row>
+                <v-row dense>
+                  <v-col>
+                    <v-select 
+                      v-model="formData.categories" 
+                      :items="categoryItems" 
+                      label="Categories" 
+                      multiple chips small-chips deletable-chips
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <v-row dense>
+                  <v-col>
+                    <v-select 
+                      v-model="formData.prerequisites" 
+                      :items="testData" 
+                      label="Prerequisites" 
+                      multiple chips small-chips deletable-chips
+                    ></v-select>
+                  </v-col>
+                  <v-col>
+                    <v-select 
+                      v-model="formData.progressions" 
+                      :items="testData" 
+                      label="Progressions" 
+                      multiple chips small-chips deletable-chips
+                    ></v-select>
+                  </v-col>
+                </v-row>
               </v-card-text>
               <v-card-actions>
                 <v-spacer/>
@@ -86,21 +133,12 @@ export default {
   name: 'trick-steps',
   data: initState,
   computed: {
-    ...mapState('video-upload', ['active']),
     ...mapGetters('tricks', ['trickItems', 'categoryItems', 'difficultyItems']),
     trickStep() { 
       return TRICK_STEP 
     },
   },
-  watch: {
-    active(newValue) {
-      if (!newValue) {
-        this.resetData();
-      }
-    },
-  },
   methods: {
-    ...mapMutations('video-upload', ['reset']),
     ...mapActions('tricks', ['createTrick']),
     setStep({ step }) {
       this.step = step;

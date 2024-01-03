@@ -104,16 +104,8 @@ export default {
   data: initState,
   computed: {
     ...mapGetters('tricks', ['trickItems']),
-    ...mapState('video-upload', ['active']),
     submissionStep() { 
       return SUBMISSION_STEP 
-    },
-  },
-  watch: {
-    active(newValue) {
-      if (!newValue) {
-        this.resetData();
-      }
     },
   },
   methods: {

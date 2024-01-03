@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using System.Diagnostics;
+using IO = System.IO;
 
 namespace TrickingLibrary.Api.Controllers;
 
@@ -46,5 +46,22 @@ public class VideosController : ControllerBase
         await video.CopyToAsync(fileStream);
 
         return Ok(saveFileName);
+    }
+
+    // DELETE api/videos/{fileName}
+    [HttpDelete("{fileName}")]
+    public IActionResult DeleteVideo(string fileName)
+    {
+        if (!fileName.StartsWith("temp_"))
+            return BadRequest();
+
+        var savePath = Path.Combine(_env.WebRootPath, "videos", fileName);
+
+        if (!IO.File.Exists(savePath))
+            return NoContent();
+
+        IO.File.Delete(savePath);
+
+        return Ok();
     }
 }
