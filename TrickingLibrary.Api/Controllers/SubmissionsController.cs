@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Channels;
+﻿using System.Threading.Channels;
+using Microsoft.AspNetCore.Mvc;
 using TrickingLibrary.Api.BackgroundServices.Messages;
+using TrickingLibrary.Api.Helpers;
 using TrickingLibrary.Data;
 using TrickingLibrary.Models;
 
@@ -29,26 +30,27 @@ public class SubmissionsController : ControllerBase
 
     // POST api/submissions
     [HttpPost]
-    public async Task<Submission> Create([FromBody] Submission submission, [FromServices] Channel<EditVideoMessage> channel)
+    public async Task<IActionResult> Create(
+        [FromBody] Submission submission,
+        [FromServices] Channel<EditVideoMessage> channel,
+        [FromServices] VideoHelper videoHelper
+    )
     {
-        // TODO - Validate video path.
+        if (!videoHelper.TemporaryVideoFileExists(submission.Video))
+            return BadRequest();
 
         submission.VideoProcessed = false;
 
         _appDbContext.Add(submission);
         await _appDbContext.SaveChangesAsync();
 
-        var input = submission.Video ?? string.Empty;
-        var extension = Path.GetExtension(input);
-        var output = $"converted_{DateTime.Now.Ticks}{extension}";
-
         await channel.Writer.WriteAsync(new EditVideoMessage { 
             SubmissionId = submission.Id,
-            Input = input,
-            Output = output
+            Input = submission.Video ?? string.Empty,
+            Output = videoHelper.GetConvertedVideoFileName()
         });
 
-        return submission;
+        return Ok(submission);
     }
 
     // PUT api/submissions

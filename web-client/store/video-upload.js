@@ -31,7 +31,7 @@ export const mutations = {
 export const actions = {
   async startVideoUpload({ commit, dispatch }, { formData }) {
     const uploadCancelTokenSource = this.$axios.CancelToken.source();
-    const options = { cancelToken: uploadCancelTokenSource.token };
+    const options = { progress: false, cancelToken: uploadCancelTokenSource.token };
     const uploadPromise = this.$axios.post('/api/videos', formData, options)
       .then(({ data }) => {
         commit('completeUpload');

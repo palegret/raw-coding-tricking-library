@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
-using IO = System.IO;
+using TrickingLibrary.Api.Helpers;
 
 namespace TrickingLibrary.Api.Controllers;
 
@@ -8,26 +7,24 @@ namespace TrickingLibrary.Api.Controllers;
 [Route("api/videos")]
 public class VideosController : ControllerBase
 {
-    private readonly IWebHostEnvironment _env;
+    private readonly VideoHelper _videoHelper;
 
-    public VideosController(IWebHostEnvironment env)
+    public VideosController(VideoHelper videoHelper)
     {
-        _env = env;
+        _videoHelper = videoHelper;
     }
 
     // GET api/videos/{video}
     [HttpGet("{video}")]
     public IActionResult GetVideo(string video)
     {
-        const string fallbackMimeType = "video/*";
-        var fileExtensionContentTypeProvider = new FileExtensionContentTypeProvider();
-        var gotMimeType = fileExtensionContentTypeProvider.TryGetContentType(video, out var mimeType);
+        var videoSavePath = _videoHelper.VideoSavePath(video);
 
-        if (!gotMimeType || string.IsNullOrEmpty(mimeType))
-            mimeType = fallbackMimeType;
+        if (string.IsNullOrWhiteSpace(videoSavePath))
+            return BadRequest();
 
-        var savePath = Path.Combine(_env.WebRootPath, "videos", video);
-        var fileStream = new FileStream(savePath, FileMode.Open, FileAccess.Read);
+        var fileStream = new FileStream(videoSavePath, FileMode.Open, FileAccess.Read);
+        var mimeType = _videoHelper.GetVideoMimeType(video);
 
         return new FileStreamResult(fileStream, mimeType);
     }
@@ -36,31 +33,25 @@ public class VideosController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> UploadVideo(IFormFile video)
     {
-        var workingDirectory = Path.Combine(_env.WebRootPath, "videos");
-        var tempFileName = $"temp_{DateTime.Now.Ticks}";
-        var extension = Path.GetExtension(video.FileName);
-        var saveFileName = $"{tempFileName}{extension}";
-        var savePath = Path.Combine(workingDirectory, saveFileName);
+        var temporaryFileName = await _videoHelper.SaveTemporaryVideo(video);
 
-        await using var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write);
-        await video.CopyToAsync(fileStream);
+        if (string.IsNullOrWhiteSpace(temporaryFileName))
+            return BadRequest();
 
-        return Ok(saveFileName);
+        return Ok(temporaryFileName);
     }
 
     // DELETE api/videos/{fileName}
     [HttpDelete("{fileName}")]
     public IActionResult DeleteVideo(string fileName)
     {
-        if (!fileName.StartsWith("temp_"))
+        if (!_videoHelper.IsTemporaryFile(fileName))
             return BadRequest();
 
-        var savePath = Path.Combine(_env.WebRootPath, "videos", fileName);
-
-        if (!IO.File.Exists(savePath))
+        if (!_videoHelper.TemporaryVideoFileExists(fileName))
             return NoContent();
 
-        IO.File.Delete(savePath);
+        _videoHelper.DeleteTemporaryVideo(fileName);
 
         return Ok();
     }
