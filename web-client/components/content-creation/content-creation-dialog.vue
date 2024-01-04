@@ -14,18 +14,9 @@
         </v-list>
       </v-menu>
     </template>
-    <v-card>
-      <v-card-text class="pt-6 pb-4">
-        <div v-if="component">
-          <component :is="component" />
-        </div>
-      </v-card-text>
-      <v-card-actions class="pb-6">
-        <v-spacer></v-spacer>
-        <v-btn @click="cancelVideoUpload">Close</v-btn>
-        <v-spacer></v-spacer>
-      </v-card-actions>
-    </v-card>
+    <div v-if="component">
+      <component :is="component" />
+    </div>
   </v-dialog>
 </template>
 

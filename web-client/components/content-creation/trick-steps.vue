@@ -2,6 +2,8 @@
   <v-card class="pt-0 elevation-1">
     <v-card-title>
       <span class="headline">Create Trick</span>
+      <v-spacer></v-spacer>
+      <v-btn icon><v-icon>mdi-close</v-icon></v-btn>
     </v-card-title>
     <v-card-text>
       <v-stepper v-model="step">
