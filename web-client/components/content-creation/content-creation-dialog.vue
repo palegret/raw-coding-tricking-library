@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import CategoryForm from './category-form';
 import DifficultyForm from './difficulty-form';
 import SubmissionSteps from './submission-steps';
@@ -60,7 +60,6 @@ export default {
   },
   methods: {
     ...mapMutations('video-upload', ['activate']),
-    ...mapActions('video-upload', ['cancelVideoUpload']),
   }
 }
 </script>

@@ -1,13 +1,15 @@
 <template>
-  <v-card class="pt-0 elevation-1">
+  <v-card>
     <v-card-title>
       <span class="headline">Create Trick</span>
       <v-spacer></v-spacer>
-      <v-btn icon><v-icon>mdi-close</v-icon></v-btn>
+      <v-btn icon @click="close">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
     </v-card-title>
-    <v-card-text>
-      <v-stepper v-model="step">
-        <v-stepper-header>
+    <v-card-text class="px-0 pb-0">
+      <v-stepper v-model="step" class="rounded-0">
+        <v-stepper-header class="elevation-0">
           <v-stepper-step :step="trickStep.TRICK_INFORMATION" :complete="step > trickStep.TRICK_INFORMATION">
             Trick Information
           </v-stepper-step>
@@ -18,7 +20,7 @@
         </v-stepper-header>
         <v-stepper-items>
           <!-- Trick Information -->
-          <v-stepper-content :step="trickStep.TRICK_INFORMATION">
+          <v-stepper-content :step="trickStep.TRICK_INFORMATION" class="pt-0">
             <v-card class="mb-2">
               <v-card-text>
                 <v-row dense>
@@ -111,8 +113,9 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { TRICK_STEP } from '../../data/enum.js';
+import { close } from '../../mixins/close.js';
 
 const initState = () => ({
   step: TRICK_STEP.TRICK_INFORMATION,
@@ -134,6 +137,9 @@ const initState = () => ({
 export default {
   name: 'trick-steps',
   data: initState,
+  mixins: [
+    close
+  ],
   computed: {
     ...mapGetters('tricks', ['trickItems', 'categoryItems', 'difficultyItems']),
     trickStep() { 
@@ -151,7 +157,6 @@ export default {
     async save() {
       await this.createTrick({ formData: this.formData });
       this.reset();
-      this.resetData();
     },
   },
 }
