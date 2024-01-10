@@ -6,6 +6,7 @@ namespace TrickingLibrary.Api.Helpers
     {
         // TODO: Move these to appsettings.json.
         public const string ConvertedFileExtension = ".mp4";
+        public const string ThumbnailFileExtension = ".png";
         public const string ConvertedFilePrefix = "conv_";
         public const string FallbackMimeType = "video/*";
         public const string TempFilePrefix = "temp_";
