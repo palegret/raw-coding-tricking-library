@@ -5,7 +5,7 @@ export default {
   // https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - Tricking Library',
-    title: 'Tricking Library',
+    title: 'Welcome',
     htmlAttrs: {
       lang: 'en'
     },

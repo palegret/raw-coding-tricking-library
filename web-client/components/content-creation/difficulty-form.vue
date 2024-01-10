@@ -1,12 +1,16 @@
 <template>
-  <v-card class="elevation-1">
+  <v-card>
     <v-card-title>
       <span class="headline">Create Difficulty</span>
+      <v-spacer></v-spacer>
+      <v-btn icon @click="close">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>      
     </v-card-title>
     <v-card-text>
       <v-form>
         <v-text-field v-model="formData.name" label="Name" required />
-        <v-textarea v-model="formData.description" label="Description" required />
+        <v-text-field v-model="formData.description" label="Description" required />
       </v-form>
     </v-card-text>
     <v-card-actions>
@@ -17,6 +21,8 @@
 </template>
 
 <script>
+import { close } from '../../mixins/close.js';
+
 const initState = () => ({
   formData: {
     name: '',
@@ -26,6 +32,9 @@ const initState = () => ({
 
 export default {
   name: 'difficulty-form',
+  mixins: [
+    close
+  ],  
   data: initState,
   methods: {
     resetData() {
@@ -33,7 +42,7 @@ export default {
     },
     save() {
       this.$axios.post('api/difficulties', this.formData);
-      this.resetData();
+      this.close();
     },
   }
 }

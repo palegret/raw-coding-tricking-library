@@ -1,11 +1,15 @@
 <template>
-  <v-card class="pt-0 elevation-1">
+  <v-card>
     <v-card-title>
       <span class="headline">Create Submission</span>
+      <v-spacer></v-spacer>
+      <v-btn icon @click="close">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
     </v-card-title>
-    <v-card-text>
-      <v-stepper v-model="step">
-        <v-stepper-header>
+    <v-card-text class="px-0 pb-0">
+      <v-stepper v-model="step" class="rounded-0">
+        <v-stepper-header class="elevation-0">
           <v-stepper-step :step="submissionStep.UPLOAD_VIDEO" :complete="step > submissionStep.UPLOAD_VIDEO">
             Upload Video
           </v-stepper-step>
@@ -87,8 +91,9 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { SUBMISSION_STEP } from '../../data/enum.js';
+import { close } from '../../mixins/close.js';
 
 const initState = () => ({
   step: SUBMISSION_STEP.UPLOAD_VIDEO,
@@ -101,6 +106,9 @@ const initState = () => ({
 
 export default {
   name: 'submission-steps',
+  mixins: [
+    close
+  ],
   data: initState,
   computed: {
     ...mapGetters('tricks', ['trickItems']),

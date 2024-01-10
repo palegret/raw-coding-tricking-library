@@ -136,10 +136,10 @@ const initState = () => ({
 
 export default {
   name: 'trick-steps',
-  data: initState,
   mixins: [
     close
   ],
+  data: initState,
   computed: {
     ...mapGetters('tricks', ['trickItems', 'categoryItems', 'difficultyItems']),
     trickStep() { 
