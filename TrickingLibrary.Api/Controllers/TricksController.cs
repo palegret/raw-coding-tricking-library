@@ -3,6 +3,7 @@ using TrickingLibrary.Data;
 using TrickingLibrary.Models;
 using TrickingLibrary.Api.Forms;
 using TrickingLibrary.Api.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrickingLibrary.Api.Controllers;
 
@@ -26,7 +27,7 @@ public class TricksController : ControllerBase
     [HttpGet("{id}")]
     public object? Get(string id) =>
         _appDbContext.Tricks
-            .Where(t => t.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase))
+            .Where(t => (t.Id ?? string.Empty).Equals(id, StringComparison.InvariantCultureIgnoreCase))
             .Select(TrickViewModel.Default)
             .FirstOrDefault();
 
@@ -34,6 +35,7 @@ public class TricksController : ControllerBase
     [HttpGet("{trickId}/submissions")]
     public IEnumerable<Submission> TrickSubmissions(string trickId) =>
         _appDbContext.Submissions
+            .Include(s => s.Video)
             .Where(s => s.TrickId.Equals(trickId, StringComparison.InvariantCultureIgnoreCase))
             .ToList();
 

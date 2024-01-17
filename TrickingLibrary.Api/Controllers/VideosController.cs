@@ -15,16 +15,19 @@ public class VideosController : ControllerBase
     }
 
     // GET api/videos/{video}
-    [HttpGet("{video}")]
-    public IActionResult GetVideo(string video)
+    [HttpGet("{videoResourceLink}")]
+    public IActionResult GetVideoResource(string videoResourceLink)
     {
-        var videoSavePath = _videoHelper.VideoSavePath(video);
-
-        if (string.IsNullOrWhiteSpace(videoSavePath))
+        if (string.IsNullOrWhiteSpace(videoResourceLink))
             return BadRequest();
 
+        if (!_videoHelper.ThumbnailFileExists(videoResourceLink) 
+            && !_videoHelper.ConvertedVideoFileExists(videoResourceLink))
+            return NotFound();
+
+        var videoSavePath = _videoHelper.VideoSavePath(videoResourceLink);
         var fileStream = new FileStream(videoSavePath, FileMode.Open, FileAccess.Read);
-        var mimeType = _videoHelper.GetVideoMimeType(video);
+        var mimeType = _videoHelper.GetVideoResourceMimeType(videoResourceLink);
 
         return new FileStreamResult(fileStream, mimeType);
     }

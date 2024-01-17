@@ -3,6 +3,7 @@ using System.Threading.Channels;
 using TrickingLibrary.Api.BackgroundServices.Messages;
 using TrickingLibrary.Api.Helpers;
 using TrickingLibrary.Data;
+using TrickingLibrary.Models;
 
 namespace TrickingLibrary.Api.BackgroundServices
 {
@@ -37,8 +38,11 @@ namespace TrickingLibrary.Api.BackgroundServices
                     editVideoMessage = await _channelReader.ReadAsync(stoppingToken);
                     
                     var inputPath = _videoHelper.VideoSavePath(editVideoMessage.Input);
-                    var outputPath = _videoHelper.VideoSavePath(editVideoMessage.Output);
-                    var arguments = $"-y -i {inputPath} -an -vf scale=540x380 {outputPath}";
+					var convertedFileName = _videoHelper.GetConvertedVideoFileName();
+					var convertedOutputPath = _videoHelper.VideoSavePath(convertedFileName);
+					var thumbnailFileName = _videoHelper.GetThumbnailFileName();
+					var thumbnailOutputPath = _videoHelper.VideoSavePath(thumbnailFileName);
+					var arguments = $"-y -i {inputPath} -an -vf scale=540x380 {convertedOutputPath} -ss 00:00:00 -vframes 1 -vf scale=540x380 {thumbnailOutputPath}";
 
                     var processStartInfo = new ProcessStartInfo {
                         FileName = _videoHelper.FFmpegPath,
@@ -52,16 +56,23 @@ namespace TrickingLibrary.Api.BackgroundServices
                     process.Start();
                     process.WaitForExit();
 
-                    if (!_videoHelper.ConvertedVideoFileExists(editVideoMessage.Output))
-                        throw new Exception("FFmpeg failed to generate converted video.");
+					if (!_videoHelper.ConvertedVideoFileExists(convertedFileName))
+						throw new Exception("FFmpeg failed to generate converted video.");
 
-                    using var serviceScope = _serviceProvider.CreateScope();
+					if (!_videoHelper.ThumbnailFileExists(thumbnailFileName))
+						throw new Exception("FFmpeg failed to generate thumbnail image.");
+
+					using var serviceScope = _serviceProvider.CreateScope();
                     var appDbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
 
                     var submission = appDbContext.Submissions.FirstOrDefault(s => s.Id.Equals(editVideoMessage.SubmissionId))
                         ?? throw new Exception($"Submission not found for submission ID '{editVideoMessage.SubmissionId}'.");
 
-                    submission.Video = editVideoMessage.Output;
+                    submission.Video = new Video {
+                        VideoLink = convertedFileName,
+                        ThumbLink = thumbnailFileName
+					};
+
                     submission.VideoProcessed = true;
                     await appDbContext.SaveChangesAsync(stoppingToken);
                 }

@@ -112,8 +112,8 @@ export default {
   data: initState,
   computed: {
     ...mapGetters('tricks', ['trickItems']),
-    submissionStep() { 
-      return SUBMISSION_STEP 
+    submissionStep() {
+      return SUBMISSION_STEP
     },
   },
   methods: {
@@ -138,6 +138,7 @@ export default {
       this.setStep({ step: this.submissionStep.SELECT_TRICK });
     },
     save() {
+      console.log('save', this.formData);
       this.createSubmission({ formData: this.formData });
       this.hide();
     },

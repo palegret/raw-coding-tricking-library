@@ -3,7 +3,14 @@
     <div class="play-button" :class="{ 'hide' : playing }" @click="playing = !playing">
       <v-icon size="78">mdi-play</v-icon>
     </div>
-    <video ref="video" :src="`http://localhost:5000/api/videos/${video}`" width="400" muted loop></video>
+    <video
+      ref="video"
+      :src="`http://localhost:5000/api/videos/${video.videoLink}`"
+      :poster="`http://localhost:5000/api/videos/${video.thumbLink}`"
+      width="400"
+      preload="none"
+      muted loop
+    ></video>
   </div>
 </template>
 
@@ -12,7 +19,7 @@ export default {
   name: 'video-player',
   props: {
     video: {
-      type: String,
+      type: Object,
       required: true,
     },
   },

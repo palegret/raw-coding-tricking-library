@@ -1,6 +1,7 @@
 ﻿using System.Threading.Channels;
 using Microsoft.AspNetCore.Mvc;
 using TrickingLibrary.Api.BackgroundServices.Messages;
+using TrickingLibrary.Api.Forms;
 using TrickingLibrary.Api.Helpers;
 using TrickingLibrary.Data;
 using TrickingLibrary.Models;
@@ -31,26 +32,31 @@ public class SubmissionsController : ControllerBase
     // POST api/submissions
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] Submission submission,
+        [FromBody] SubmissionForm submissionForm,
         [FromServices] Channel<EditVideoMessage> channel,
         [FromServices] VideoHelper videoHelper
     )
     {
-        if (!videoHelper.TemporaryVideoFileExists(submission.Video))
-            return BadRequest();
+        if (submissionForm == null 
+            || string.IsNullOrWhiteSpace(submissionForm.TrickId)
+            || !videoHelper.TemporaryVideoFileExists(submissionForm.Video))
+			return BadRequest();
 
-        submission.VideoProcessed = false;
+        var submission = new Submission {
+			TrickId = submissionForm.TrickId,
+			Description = submissionForm.Description,
+			VideoProcessed = false
+		};
 
         _appDbContext.Add(submission);
         await _appDbContext.SaveChangesAsync();
 
         await channel.Writer.WriteAsync(new EditVideoMessage { 
             SubmissionId = submission.Id,
-            Input = submission.Video ?? string.Empty,
-            Output = videoHelper.GetConvertedVideoFileName()
+            Input = submissionForm.Video,
         });
 
-        return Ok(submission);
+        return Ok(submissionForm);
     }
 
     // PUT api/submissions

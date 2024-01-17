@@ -94,19 +94,19 @@ public static class Program
             }
         });
 
-        appDbContext.Submissions.Add(new Submission {
-            TrickId = "backflip",
-            Description = "A backflip, trying to go for MAX height.",
-            Video = "_test_video_01.mp4",
-            VideoProcessed = true,
-        });
+        //appDbContext.Submissions.Add(new Submission {
+        //    TrickId = "backflip",
+        //    Description = "A backflip, trying to go for MAX height.",
+        //    Video = "_test_video_01.mp4",
+        //    VideoProcessed = true,
+        //});
 
-        appDbContext.Submissions.Add(new Submission {
-            TrickId = "backflip",
-            Description = "A backflip, trying to go for MIN height.",
-            Video = "_test_video_02.mp4",
-            VideoProcessed = true,
-        });
+        //appDbContext.Submissions.Add(new Submission {
+        //    TrickId = "backflip",
+        //    Description = "A backflip, trying to go for MIN height.",
+        //    Video = "_test_video_02.mp4",
+        //    VideoProcessed = true,
+        //});
 
         appDbContext.SaveChanges();
     }
