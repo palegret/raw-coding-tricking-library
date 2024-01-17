@@ -9,7 +9,7 @@
       :poster="`http://localhost:5000/api/videos/${video.thumbLink}`"
       width="400"
       preload="none"
-      muted loop
+      muted loop playsinline
     ></video>
   </div>
 </template>

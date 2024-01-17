@@ -1,7 +1,11 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  // Global page headers: 
+  publicRuntimeConfig: {
+    api: process.env.API_URL
+  },
+
+  // Global page headers:
   // https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - Tricking Library',
@@ -10,48 +14,48 @@ export default {
       lang: 'en'
     },
     meta: [
-      { 
-        charset: 'utf-8' 
+      {
+        charset: 'utf-8'
       },
-      { 
-        name: 'viewport', 
-        content: 'width=device-width, initial-scale=1' 
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1'
       },
-      { 
-        hid: 'description', 
-        name: 'description', 
-        content: '' 
+      {
+        hid: 'description',
+        name: 'description',
+        content: ''
       },
-      { 
-        name: 'format-detection', 
-        content: 'telephone=no' 
+      {
+        name: 'format-detection',
+        content: 'telephone=no'
       }
     ],
     link: [
-      { 
-        rel: 'icon', 
-        type: 'image/x-icon', 
-        href: '/favicon.ico' 
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon.ico'
       }
     ]
   },
 
-  // Global CSS: 
+  // Global CSS:
   // https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/css/main.scss'
   ],
 
-  // Plugins to run before rendering page: 
+  // Plugins to run before rendering page:
   // https://go.nuxtjs.dev/config-plugins
   plugins: [
   ],
 
-  // Auto import components: 
+  // Auto import components:
   // https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): 
+  // Modules for dev and build (recommended):
   // https://go.nuxtjs.dev/config-modules
   buildModules: [
     // nuxt-community/vuetify-module:
@@ -59,7 +63,7 @@ export default {
     '@nuxtjs/vuetify',
   ],
 
-  // Modules: 
+  // Modules:
   // https://go.nuxtjs.dev/config-modules
   modules: [
     // nuxt/axios:
@@ -67,15 +71,15 @@ export default {
     '@nuxtjs/axios',
   ],
 
-  // Axios module configuration: 
+  // Axios module configuration:
   // https://go.nuxtjs.dev/config-axios
   axios: {
-    // Workaround to avoid enforcing hard-coded localhost:3000: 
+    // Workaround to avoid enforcing hard-coded localhost:3000:
     // https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'http://localhost:5000',
+    baseURL: process.env.API_URL,
   },
 
-  // Vuetify module configuration: 
+  // Vuetify module configuration:
   // https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     theme: {
@@ -94,7 +98,7 @@ export default {
     }
   },
 
-  // Build Configuration: 
+  // Build Configuration:
   // https://go.nuxtjs.dev/config-build
   build: {
   }

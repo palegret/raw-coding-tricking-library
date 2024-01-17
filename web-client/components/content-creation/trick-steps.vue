@@ -18,60 +18,60 @@
             Review
           </v-stepper-step>
         </v-stepper-header>
-        <v-stepper-items>
+        <v-stepper-items class="fpt-0">
           <!-- Trick Information -->
-          <v-stepper-content :step="trickStep.TRICK_INFORMATION" class="pt-0">
+          <v-stepper-content :step="trickStep.TRICK_INFORMATION">
             <v-card class="mb-2">
               <v-card-text>
                 <v-row dense>
                   <v-col>
-                    <v-text-field 
-                      v-model="formData.name" 
-                      label="Name" 
-                      required 
+                    <v-text-field
+                      v-model="formData.name"
+                      label="Name"
+                      required
                     />
                   </v-col>
                   <v-col>
-                    <v-select 
-                      v-model="formData.difficulty" 
-                      :items="difficultyItems" 
+                    <v-select
+                      v-model="formData.difficulty"
+                      :items="difficultyItems"
                       label="Difficulty"
                     ></v-select>
                   </v-col>
                 </v-row>
                 <v-row dense>
                   <v-col>
-                    <v-text-field 
-                      v-model="formData.description" 
-                      label="Description" 
-                      required 
+                    <v-text-field
+                      v-model="formData.description"
+                      label="Description"
+                      required
                     />
                   </v-col>
                 </v-row>
                 <v-row dense>
                   <v-col>
-                    <v-select 
-                      v-model="formData.categories" 
-                      :items="categoryItems" 
-                      label="Categories" 
+                    <v-select
+                      v-model="formData.categories"
+                      :items="categoryItems"
+                      label="Categories"
                       multiple chips small-chips deletable-chips
                     ></v-select>
                   </v-col>
                 </v-row>
                 <v-row dense>
                   <v-col>
-                    <v-select 
-                      v-model="formData.prerequisites" 
-                      :items="testData" 
-                      label="Prerequisites" 
+                    <v-select
+                      v-model="formData.prerequisites"
+                      :items="testData"
+                      label="Prerequisites"
                       multiple chips small-chips deletable-chips
                     ></v-select>
                   </v-col>
                   <v-col>
-                    <v-select 
-                      v-model="formData.progressions" 
-                      :items="testData" 
-                      label="Progressions" 
+                    <v-select
+                      v-model="formData.progressions"
+                      :items="testData"
+                      label="Progressions"
                       multiple chips small-chips deletable-chips
                     ></v-select>
                   </v-col>
@@ -142,8 +142,8 @@ export default {
   data: initState,
   computed: {
     ...mapGetters('tricks', ['trickItems', 'categoryItems', 'difficultyItems']),
-    trickStep() { 
-      return TRICK_STEP 
+    trickStep() {
+      return TRICK_STEP
     },
   },
   methods: {

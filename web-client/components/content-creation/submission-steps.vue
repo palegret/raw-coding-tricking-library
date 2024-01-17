@@ -26,7 +26,7 @@
             Review
           </v-stepper-step>
         </v-stepper-header>
-        <v-stepper-items>
+        <v-stepper-items class="fpt-0">
           <!-- Upload Video -->
           <v-stepper-content :step="submissionStep.UPLOAD_VIDEO">
             <v-card class="mb-2">
