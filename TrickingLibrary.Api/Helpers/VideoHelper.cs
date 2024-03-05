@@ -25,20 +25,20 @@ namespace TrickingLibrary.Api.Helpers
         public string VideoWorkingDirectory =>
             _env.IsDevelopment() ? Path.Combine(WorkingDirectory, VideoDirectory) : string.Empty;
 
-        public string VideoSavePath(string? fileName) => 
+        public string VideoSavePath(string fileName) => 
             _env.IsDevelopment() && !string.IsNullOrWhiteSpace(fileName) 
                 ? Path.Combine(VideoWorkingDirectory, fileName) : string.Empty;
 
 		public string FFmpegPath =>
 			Path.Combine(_env.ContentRootPath, "Resources", "FFmpeg", "ffmpeg.exe");
 
-        public bool IsTemporaryFile(string? fileName) =>
+        public bool IsTemporaryFile(string fileName) =>
             fileName?.StartsWith(TempFilePrefix) ?? false;
 
-		public bool IsConvertedFile(string? fileName) =>
+		public bool IsConvertedFile(string fileName) =>
 			fileName?.StartsWith(ConvertedFilePrefix) ?? false;
 
-		public bool IsThumbnailFile(string? fileName) =>
+		public bool IsThumbnailFile(string fileName) =>
         	fileName?.StartsWith(ThumbnailFilePrefix) ?? false;
 
 		public string GetTemporaryVideoFileName(string fileName) => 
@@ -50,13 +50,13 @@ namespace TrickingLibrary.Api.Helpers
 		public string GetThumbnailFileName() =>
 	        $"{ThumbnailFilePrefix}{DateTime.Now.Ticks}{ThumbnailFileExtension}";
 
-		public bool TemporaryVideoFileExists(string? fileName) =>
+		public bool TemporaryVideoFileExists(string fileName) =>
             IsTemporaryFile(fileName) && File.Exists(VideoSavePath(fileName));
 
-        public bool ConvertedVideoFileExists(string? fileName) =>
+        public bool ConvertedVideoFileExists(string fileName) =>
             IsConvertedFile(fileName) && File.Exists(VideoSavePath(fileName));
 
-		public bool ThumbnailFileExists(string? fileName) =>
+		public bool ThumbnailFileExists(string fileName) =>
 			IsThumbnailFile(fileName) && File.Exists(VideoSavePath(fileName));
 
 		public string GetVideoResourceMimeType(string fileName)
@@ -84,7 +84,7 @@ namespace TrickingLibrary.Api.Helpers
             return temporaryFileName;
         }
 
-        public void DeleteTemporaryVideo(string? fileName)
+        public void DeleteTemporaryVideo(string fileName)
         {
             if (!IsTemporaryFile(fileName) || !TemporaryVideoFileExists(fileName))
                 return;
