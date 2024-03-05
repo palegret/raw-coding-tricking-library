@@ -26,7 +26,7 @@ public class SubmissionsController : ControllerBase
 
     // GET api/submissions/{id}
     [HttpGet("{id}")]
-    public Submission? Get(int id) =>
+    public Submission Get(int id) =>
         _appDbContext.Submissions.FirstOrDefault(s => s.Id.Equals(id));
 
     // POST api/submissions
@@ -61,7 +61,7 @@ public class SubmissionsController : ControllerBase
 
     // PUT api/submissions
     [HttpPut]
-    public async Task<Submission?> Update([FromBody] Submission submission)
+    public async Task<Submission> Update([FromBody] Submission submission)
     {
         if (submission.Id == 0)
             return null;

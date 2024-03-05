@@ -25,7 +25,7 @@ public class TricksController : ControllerBase
 
     // GET api/tricks/{id}
     [HttpGet("{id}")]
-    public object? Get(string id) =>
+    public object Get(string id) =>
         _appDbContext.Tricks
             .Where(t => (t.Id ?? string.Empty).Equals(id, StringComparison.InvariantCultureIgnoreCase))
             .Select(TrickViewModel.Default)
@@ -41,7 +41,7 @@ public class TricksController : ControllerBase
 
     // POST api/tricks
     [HttpPost]
-    public async Task<object?> Create([FromBody] TrickForm trickForm)
+    public async Task<object> Create([FromBody] TrickForm trickForm)
     {
         if (trickForm == null || string.IsNullOrWhiteSpace(trickForm.Name))
             return null;
@@ -71,7 +71,7 @@ public class TricksController : ControllerBase
 
     // PUT api/tricks
     [HttpPut]
-    public async Task<object?> Update([FromBody] Trick trick)
+    public async Task<object> Update([FromBody] Trick trick)
     {
         if (string.IsNullOrWhiteSpace(trick.Id))
             return null;
@@ -100,7 +100,7 @@ public class TricksController : ControllerBase
         return Ok();
     }
 
-    private static object? GetTrickViewModel(Trick trick)
+    private static object GetTrickViewModel(Trick trick)
     {
         if (trick == null)
             return null;

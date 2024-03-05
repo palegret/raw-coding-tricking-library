@@ -22,19 +22,19 @@ public class DifficultyController : ControllerBase
 
     // GET api/difficulties/{id}
     [HttpGet("{id}")]
-    public Difficulty? Get(string id) =>
+    public Difficulty Get(string id) =>
         _appDbContext.Difficulties.FirstOrDefault(d => d.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
     // GET api/{id}/tricks
     [HttpGet("{id}/tricks")]
-    public IEnumerable<Trick?> DifficultyTricks(string id) =>
+    public IEnumerable<Trick> DifficultyTricks(string id) =>
         _appDbContext.Tricks
             .Where(tc => (tc.Difficulty ?? string.Empty).Equals(id, StringComparison.InvariantCultureIgnoreCase))
             .ToList();
 
     // POST api/difficulties
     [HttpPost]
-    public async Task<Difficulty?> Create([FromBody] Difficulty difficulty)
+    public async Task<Difficulty> Create([FromBody] Difficulty difficulty)
     {
         if (difficulty == null || string.IsNullOrWhiteSpace(difficulty.Name))
             return null;
@@ -49,7 +49,7 @@ public class DifficultyController : ControllerBase
 
     // PUT api/difficulties
     [HttpPut]
-    public async Task<Difficulty?> Update([FromBody] Difficulty difficulty)
+    public async Task<Difficulty> Update([FromBody] Difficulty difficulty)
     {
         if (string.IsNullOrWhiteSpace(difficulty.Id))
             return null;

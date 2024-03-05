@@ -8,14 +8,4 @@ public class Trick : BaseModel<string>
     public IList<TrickRelationship> Prerequisites { get; set; }
     public IList<TrickRelationship> Progressions { get; set; }
     public IList<TrickCategory> TrickCategories { get; set; }
-
-    public Trick()
-    {
-        Name = string.Empty; 
-        Description = string.Empty; 
-        Difficulty = string.Empty;
-        Prerequisites = new List<TrickRelationship>();
-        Progressions = new List<TrickRelationship>();
-        TrickCategories = new List<TrickCategory>();
-    }
 }

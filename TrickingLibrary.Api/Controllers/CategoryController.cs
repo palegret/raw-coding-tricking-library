@@ -23,7 +23,7 @@ public class CategoryController : ControllerBase
 
     // GET api/categories/{id}
     [HttpGet("{id}")]
-    public Category? Get(string id) =>
+    public Category Get(string id) =>
         _appDbContext.Categories.FirstOrDefault(c => c.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
     // GET api/{id}/tricks
@@ -37,7 +37,7 @@ public class CategoryController : ControllerBase
 
     // POST api/categories
     [HttpPost]
-    public async Task<Category?> Create([FromBody] Category category)
+    public async Task<Category> Create([FromBody] Category category)
     {
         if (category == null || string.IsNullOrWhiteSpace(category.Name))
             return null;
@@ -52,7 +52,7 @@ public class CategoryController : ControllerBase
 
     // PUT api/categories
     [HttpPut]
-    public async Task<Category?> Update([FromBody] Category category)
+    public async Task<Category> Update([FromBody] Category category)
     {
         if (string.IsNullOrWhiteSpace(category.Id))
             return null;
